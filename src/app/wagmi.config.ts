@@ -1,18 +1,12 @@
-import { createConfig, http } from 'wagmi';
+import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 import { sepolia } from 'wagmi/chains';
-import { injected, walletConnect, metaMask, safe } from 'wagmi/connectors';
 
-export const config = createConfig({
-  chains: [sepolia],
-  connectors: [
-    injected(),
-    walletConnect({
-      projectId: process.env.WALLETCONNECT_PROJECT_ID as string,
-    }),
-    metaMask(),
-    safe(),
+export const config = getDefaultConfig({
+  appName: 'RainbowKit demo',
+  projectId: 'YOUR_PROJECT_ID',
+  chains: [
+    sepolia,
+    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? [sepolia] : []),
   ],
-  transports: {
-    [sepolia.id]: http(),
-  },
+  ssr: true,
 });
